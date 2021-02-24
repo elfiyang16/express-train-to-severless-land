@@ -1,0 +1,43 @@
+# serverless.yml
+service: my-service
+
+custom:
+    appName: my-express-api
+    prefix: app-${self:custom.appName}-
+    logLevel: ${self:custom.prefix}${self:provider.stage}.LogLevel
+    stagePrefix:
+        dev: ${self:provider.stage}
+        staging: ${self:provider.stage}
+        prod: ''
+    service:   # These are the names of the services
+        cloudFormation: ${self:custom.prefix}${self:custom.stagePrefix.${self:provider.stage}, ''}
+        apiGateway: ${self:custom.prefix}${self:custom.stagePrefix.${self:provider.stage}, ''}
+    cfBucketName: cf-stack-${self:custom.appName}-${self:provider.region}-${self:custom.stagePrefix.${self:provider.stage}, ''}
+
+provider:
+    name: aws                                # (required) Serverless provider.
+    runtime: nodejs12.x                      # (required) Node version.
+    memorySize: 128                          # (optional) Lambda memory. Default is 1024
+    timeout: 10                              # (optional) Lambda timeout. Default is 30
+    stage: ${opt:stage, 'dev'}               # (optional) Either take --stage param from the command line, or use default.
+    region: ${opt:region, 'us-east-1'}       # (optional) Either take --region param from the command line, or use default.
+    stackName: ${self:custom.service.cloudFormation} # (optional) Name Cloudformation stack
+    apiName: ${self:custom.service.apiGateway}       # (optional) Name API Gateway
+    env:                                      # (optional) env vars
+        DEBUG: 'express:*'                    # (optional) Express specific env var will print express debug logs
+        logLevel: ${self:custom.logLevel}     # (optional) Custom name for Cloudwatch logs
+    logRetentionInDays: 1                     # (optional) Keep your Cloudwatch Logs for x days
+    deploymentBucket:                         # (optional) Custom S3 bucketname to store
+        name: ${self:custom.cfBucketName}     # (optional) Custom bucket name created by Cloudformation
+        serverSideEncryption: AES256          # (optional) Encrypt the data
+    profile: ${opt:profile, "default"}        # (optional) Add an AWS profile through --profile option
+
+plugins:
+    - serverless-deployment-bucket            # https://www.npmjs.com/package/serverless-deployment-bucket
+
+functions:
+    express:                                  # Name of function
+        handler: index.handler                # Path to function
+        events:
+            - http: ANY /
+            - http: 'ANY {proxy+}'            # All requests on this domain are routed to this function
