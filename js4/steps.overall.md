@@ -1,0 +1,5 @@
+- Create dynamo table (get ARN)
+- Create IAM policy
+- Create Lambda function that interacts with the db
+- Create API gateway (model, configs, cars) that connects with Lambda
+- Connect API gateway with the frontend
