@@ -19,3 +19,10 @@
 ![](2021-05-05-15-43-28.png)
 ![](2021-05-05-15-43-33.png)
 ![](2021-05-05-15-45-41.png)
+![](2021-05-05-16-57-18.png)
+![](2021-05-05-17-06-46.png)
+
+- Get method is nested under /products route and does not require lambda proxy as it doens;t need the event object
+  ![](2021-05-05-17-07-41.png)
+  ![](2021-05-05-17-08-11.png)
+  ![](2021-05-05-17-21-32.png)
