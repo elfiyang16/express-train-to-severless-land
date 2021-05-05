@@ -4,7 +4,7 @@ AWS.config.update({ region: "eu-west-1" });
 
 exports.handler = function (event, context, callback) {
   const ddb = new AWS.DynamoDB({ apiVersion: "2012-10-08" });
-  const documentClient = new AWS.DynamoDB.documentClient({
+  const documentClient = new AWS.DynamoDB.DocumentClient({
     // will marshall/unmarshall object
     region: "eu-west-1",
   });
@@ -24,7 +24,7 @@ exports.handler = function (event, context, callback) {
   //     }
   //     console.log(data);
   //   });
-  documentClient.getItem(params, (err, data) => {
+  documentClient.get(params, (err, data) => {
     if (err) {
       console.log(err);
     }
