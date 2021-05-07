@@ -27,4 +27,10 @@ Fullstack CRUD operation calls to Lambda on DynamoDB through API Gateway
 
 - SNS
 - SQS
+
+A simple SNS->SQS invoked with Python
+
+###### python 6
+
+- SNS
 - Lamdba
